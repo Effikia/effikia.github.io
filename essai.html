@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Essai gratuit · Effikia</title>
+<meta name="description" content="Essai gratuit de 14 jours de la veille d'appels d'offres Effikia, sans carte bancaire.">
+<link rel="icon" type="image/png" sizes="32x32" href="img/favicon-32.png">
+<link rel="apple-touch-icon" href="img/apple-touch-icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+.signup { display: grid; grid-template-columns: 1fr 1.2fr; gap: 40px; align-items: start; }
+.signup form label { display: block; font-weight: 650; margin: 16px 0 6px; }
+.signup .hint { font-weight: 400; font-size: 14px; color: var(--muted); }
+.signup input[type=text], .signup input[type=email], .signup select, .signup textarea { width: 100%; padding: 11px 12px;
+  border: 1.5px solid var(--line); border-radius: 10px; background: var(--bg); color: var(--ink); font: inherit; }
+.signup input:focus, .signup select:focus, .signup textarea:focus { outline: none; border-color: var(--blue); }
+.signup textarea { min-height: 76px; }
+.check { display: flex !important; gap: 10px; align-items: flex-start; font-weight: 400 !important; margin-top: 20px !important; }
+.check input { margin-top: 5px; }
+.hp { position: absolute; left: -9999px; }
+#msg { margin-top: 16px; padding: 12px 14px; border-radius: 10px; display: none; }
+#msg.ok { display: block; background: color-mix(in srgb, var(--good) 15%, transparent); }
+#msg.err { display: block; background: color-mix(in srgb, var(--bad) 15%, transparent); }
+.signup .btn { margin-top: 20px; width: 100%; }
+.signup .btn[disabled] { opacity: .6; cursor: wait; }
+@media (max-width: 900px) { .signup { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+<header class="site-header">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="img/logo-96.png" alt="" width="40" height="40"><span>Effik<b>ia</b></span></a>
+    <input type="checkbox" id="menu" class="menu-toggle" aria-label="Ouvrir le menu">
+    <label for="menu" class="menu-btn" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav class="nav" aria-label="Navigation principale">
+      <a href="index.html#fonctionnement">Fonctionnement</a>
+      <a href="exemple.html">Exemple</a>
+      <a href="index.html#tarifs">Tarifs</a>
+      <a href="index.html#faq">FAQ</a>
+      <a class="btn" href="essai.html">Essai gratuit</a>
+    </nav>
+  </div>
+</header>
+
+<main class="wrap page">
+  <div class="signup">
+    <div>
+      <span class="eyebrow">Essai gratuit</span>
+      <h1>14 jours pour juger sur pièces</h1>
+      <p class="lead">Recevez chaque matin les appels d'offres de votre métier et de vos départements, analysés. Sans carte bancaire : les envois s'arrêtent tout seuls à la fin de l'essai.</p>
+      <ul class="checklist">
+        <li>Premier email dès le lendemain matin</li>
+        <li>Lien vers le dossier de consultation, montant, conseil</li>
+        <li>Ensuite 4,90&nbsp;€ HT par mois si vous continuez, sans engagement</li>
+      </ul>
+      <p class="note" style="margin-top:18px"><a href="exemple.html">Voir un email réel →</a></p>
+    </div>
+
+    <div class="card">
+      <!-- Shown while online sign-up is closed (until the SIRET is received). -->
+      <div id="closed" hidden>
+        <h2 style="font-size:22px">Demandez votre essai par email</h2>
+        <p>L'inscription en ligne ouvre très bientôt. En attendant, envoyez-nous votre métier, vos départements et votre SIREN : nous activons votre essai et vous le confirmons par email.</p>
+        <a class="btn" href="mailto:contact@effikia.fr?subject=Essai%20gratuit%20Effikia&body=M%C3%A9tier%20%3A%0AD%C3%A9partements%20%3A%0ASIREN%20%3A%0A">Demander l'essai par email</a>
+        <p class="note" style="margin-top:12px">En demandant l'essai, vous acceptez les <a href="cgv.html">conditions générales de vente</a>. Voir aussi notre <a href="confidentialite.html">politique de confidentialité</a>.</p>
+      </div>
+
+      <form id="f" novalidate hidden>
+        <label for="email" style="margin-top:0">Email qui recevra les appels d'offres</label>
+        <input type="email" id="email" name="email" required autocomplete="email">
+
+        <label for="siren">SIREN de l'entreprise <span class="hint">(9 chiffres ; un essai par entreprise)</span></label>
+        <input type="text" id="siren" name="siren" required inputmode="numeric" placeholder="123 456 789">
+
+        <label for="trade">Métier</label>
+        <select id="trade" name="trade">
+          <option value="couverture">Couverture, charpente, zinguerie (couvreur)</option>
+          <option value="btp">Bâtiment et travaux publics (tous métiers)</option>
+        </select>
+
+        <label for="departments">Départements <span class="hint">(numéros séparés par des virgules, 15 au maximum)</span></label>
+        <input type="text" id="departments" name="departments" required placeholder="75, 92, 93, 94">
+
+        <label for="description">Vos activités <span class="hint">(facultatif : « zinc et ardoise, monuments historiques »…)</span></label>
+        <textarea id="description" name="description" maxlength="500"></textarea>
+
+        <label for="certifications">Qualifications <span class="hint">(facultatif, séparées par des virgules : Qualibat 3111, RGE…)</span></label>
+        <input type="text" id="certifications" name="certifications">
+
+        <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+        <label class="check"><input type="checkbox" id="consent" name="consent" required>
+          <span>J'accepte les <a href="cgv.html" target="_blank">conditions générales de vente</a> et j'ai lu la <a href="confidentialite.html" target="_blank">politique de confidentialité</a>. Je demande l'essai pour les besoins de mon entreprise.</span></label>
+
+        <button class="btn" type="submit" id="go">Recevoir mon lien de confirmation</button>
+        <div id="msg" role="status"></div>
+        <p class="note">Vous recevrez un email avec un lien à cliquer pour activer l'essai.</p>
+      </form>
+    </div>
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <a class="brand" href="index.html"><img src="img/logo-96.png" alt="" width="28" height="28"><span>Effik<b>ia</b></span></a>
+    <nav aria-label="Liens légaux">
+      <a href="exemple.html">Exemple</a><a href="index.html#tarifs">Tarifs</a><a href="index.html#faq">FAQ</a>
+      <a href="mentions-legales.html">Mentions légales</a><a href="cgv.html">CGV</a><a href="confidentialite.html">Confidentialité</a>
+      <a href="mailto:contact@effikia.fr">contact@effikia.fr</a>
+    </nav>
+    <span>© 2026 Effikia, Mathieu Dabrowski EI</span>
+  </div>
+</footer>
+<script>
+// Online sign-up: set OPEN to true once the SIRET is received and the Worker accepts sign-ups (docs/INSCRIPTION.md).
+const OPEN = false;
+const ENDPOINT = "https://effikia-inscription.effikia.workers.dev/signup";
+const f = document.getElementById("f"), msg = document.getElementById("msg"), go = document.getElementById("go");
+(OPEN ? f : document.getElementById("closed")).hidden = false;
+function show(text, ok) { msg.textContent = text; msg.className = ok ? "ok" : "err"; }
+f.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  if (!f.consent.checked) return show("Merci d'accepter les conditions générales de vente.", false);
+  const body = Object.fromEntries(new FormData(f));
+  body.consent = true;
+  go.disabled = true;
+  try {
+    const r = await fetch(ENDPOINT, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body) });
+    const data = await r.json().catch(() => ({}));
+    if (r.ok) { show("C'est noté ! Ouvrez l'email que nous venons de vous envoyer (pensez aux indésirables) et cliquez sur le lien pour activer l'essai.", true); f.reset(); }
+    else show(data.error || "Erreur : réessayez, ou écrivez à contact@effikia.fr.", false);
+  } catch { show("Connexion impossible : réessayez, ou écrivez à contact@effikia.fr.", false); }
+  go.disabled = false;
+});
+</script>
+</body>
+</html>
